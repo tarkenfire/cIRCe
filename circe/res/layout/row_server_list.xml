@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    >
 
     <TextView 
         android:id="@+id/server_row_server_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:textSize="20sp"
+        android:textColor="@color/list_item_text_color"
+        android:textStyle="bold"
         />
     
     <TextView
@@ -14,11 +21,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/server_row_server_name"
+        android:layout_marginLeft="5dp"
+        android:textSize="18sp"
+        android:textColor="@color/list_item_text_color"
          />
     
     <ImageView 
         android:id="@+id/server_row_status_icon"
-        
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="5dp"
         />
     
 
