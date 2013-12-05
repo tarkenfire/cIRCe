@@ -64,16 +64,15 @@ public class ServerList extends Activity
 		{
 			case R.id.action_add_server:
 				i = new Intent(this, AddServerActivity.class);
+				startActivityForResult(i, 0);
 				break;
 			case R.id.action_settings:
 				i = new Intent(this, SettingsActivity.class);
+				startActivity(i);
 				break;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-		
-		if (i != null)
-			startActivity(i);
 		
 		return true;
 	}

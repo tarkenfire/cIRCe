@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp"
+    android:background="#000000"
+     >
+    
+    <TextView 
+        android:id="@+id/add_server_name_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_server_name"
+        android:textColor="#FFFFFF"
+        />
+    <EditText 
+        android:id="@+id/add_server_name_entry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_server_name"
+        android:layout_below="@id/add_server_name_label"
+        android:inputType="textCapWords"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/edit_text_holo_dark"
+        />
+    
+    <TextView
+        android:id="@+id/add_server_address_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:text="@string/label_server_address"
+        android:layout_below="@id/add_server_name_entry"    
+        android:textColor="#FFFFFF"   
+         />
+    <EditText 
+        android:id="@+id/add_server_address_entry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"  
+        android:hint="@string/hint_server_address"
+        android:layout_below="@id/add_server_address_label" 
+        android:inputType="textUri"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/edit_text_holo_dark"
+        />
+    
+    <LinearLayout
+        android:id="@+id/add_server_portlogging_label_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/add_server_address_entry"
+        >
+        
+	    <TextView 
+	        android:id="@+id/add_server_port_label"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"   
+	        android:text="@string/label_server_port" 
+	        android:layout_weight="1"
+	        android:textColor="#FFFFFF"
+	        />
+	    <TextView 
+	        android:id="@+id/add_server_logging_label"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"	
+	        android:text="@string/label_server_logging"
+	        android:layout_weight="1"
+	        android:textColor="#FFFFFF"
+			/>
+	    
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/add_server_portlogging_entry_container"
+		android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/add_server_portlogging_label_container"
+        android:textColor="#FFFFFF"
+        >
+    
+	    <EditText
+	        android:id="@+id/add_server_port_entry"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/hint_server_port"
+	        android:inputType="number"
+	        android:layout_weight="1"
+	        android:textColor="#FFFFFF"
+	        android:background="@drawable/edit_text_holo_dark"
+	         />
+	    
+	    <Switch 
+	        android:id="@+id/add_server_logging_entry"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:paddingRight="80dp"        
+	        />
+    
+    </LinearLayout>
+    
+	<TextView
+        android:id="@+id/add_server_default_username_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_username"
+        android:layout_below="@id/add_server_portlogging_entry_container"	
+		android:textColor="#FFFFFF"
+	     />
+    <EditText
+        android:id="@+id/add_server_default_username_entry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:hint="@string/hint_username"  
+        android:layout_below="@id/add_server_default_username_label"     
+        android:inputType="textNoSuggestions"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/edit_text_holo_dark"
+         />
+    
+	<TextView 
+        android:id="@+id/add_server_password_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"	
+        android:text="@string/label_password"
+        android:layout_below="@id/add_server_default_username_entry"
+        android:textColor="#FFFFFF"
+	    />
+	
+    <EditText
+        android:id="@+id/add_server_password_entry"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add_server_password_label"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/edit_text_holo_dark"
+         />
+    
+
+</RelativeLayout>

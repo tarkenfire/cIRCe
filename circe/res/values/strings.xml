@@ -4,10 +4,24 @@
     
     <string name="action_settings">Settings</string>
     <string name="action_new_server">New Server</string>
+    <string name="action_accept_server">Create Server</string>
     
     <string name="title_server_list">Server List</string>
     
     <string name="list_frag_loading">Loading…</string>
+    
+    <string name="label_server_name">Server Name</string>
+    <string name="label_server_address">Server Address</string>
+    <string name="label_server_port">Port</string>
+    <string name="label_server_logging">Chat Logging</string>
+    <string name="label_username">User Name</string>
+    <string name="label_password">Password</string>
+    
+    <string name="hint_server_name">e.g. "Quakenet"</string>
+    <string name="hint_server_address">e.g. "irc.quakenet.org"</string>
+    <string name="hint_server_port">6666</string>
+    <string name="hint_username">e.g. "IRCUser123"</string>
+    
     
     <string name="pref_launch_log_viewer">Chat Log Viewer</string>
     <string name="pref_log_directory">Default Log Directory</string>
@@ -20,7 +34,6 @@
     <string name="pref_default_username">Default Username</string>
     <string name="pref_default_logging">Default Logging</string>
 
-    
     <string name="pref_summary_launch_log_viewer">Launch the log viewer to display previously recorded chat logs.</string>
     <string name="pref_summary_log_directory">Default location in storage where chat logs will be saved and viewed.</string>
     <string name="pref_summary_notify_on_highlight">If selected, notifications will be sent whenever your current nickname appears in any of the IRC windows opened.</string>
@@ -33,5 +46,7 @@
     <string name="pref_cat_logging">Chat Log Settings</string>
     <string name="pref_cat_notify_types">Notification Types</string>
     <string name="pref_cat_general_settings">General Settings</string>
+    
+    <string name="toast_server_created">Server Created (Feature Not Implemented)</string>
 	
 </resources>
