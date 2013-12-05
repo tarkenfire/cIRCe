@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="16"
         android:targetSdkVersion="19" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -24,7 +24,15 @@
             </intent-filter>
         </activity>
         <activity android:name="com.hinodesoftworks.circe.SettingsActivity"></activity>
-        <activity android:name="com.hinodesoftworks.circe.AddServerActivity"></activity>
+        <activity android:name="com.hinodesoftworks.circe.AddServerActivity"
+            android:parentActivityName="com.hinodesoftworks.circe.ServerList"> 
+        </activity>
+        <activity android:name="com.hinodesoftworks.circe.ServerViewActivity"
+            android:parentActivityName="com.hinodesoftworks.circe.ServerList"
+            ></activity>
+        <activity android:name="com.hinodesoftworks.circe.UserListActivity"
+            android:parentActivityName="com.hinodesoftworks.circe.ServerViewActivity"
+            ></activity>
     </application>
 
 </manifest>

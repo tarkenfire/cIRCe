@@ -2,6 +2,7 @@ package com.hinodesoftworks.circe;
 
 import java.util.ArrayList;
 
+import com.hinodesoftworks.circe.ServerListFragment.OnServerSelectedListener;
 import com.hinodesoftworks.utils.Server;
 
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.content.res.Resources;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class ServerList extends Activity
+public class ServerList extends Activity implements OnServerSelectedListener
 {
 
 	@Override
@@ -75,6 +76,15 @@ public class ServerList extends Activity
 		}
 		
 		return true;
+	}
+
+	@Override
+	public void onServerSelected()
+	{
+		// TODO non dynamic code
+		Intent i = new Intent(this, ServerViewActivity.class);
+		startActivity(i);
+		
 	}
 
 }

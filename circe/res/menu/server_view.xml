@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item
+        android:id="@+id/action_show_user_list"
+        android:orderInCategory="1"
+        android:showAsAction="never"
+        android:title="@string/action_show_user_list"/>
+	
+	<item
+        android:id="@+id/action_open_macro_editor"
+        android:orderInCategory="2"
+        android:showAsAction="never"
+        android:title="@string/action_open_macro"/>
+
+</menu>

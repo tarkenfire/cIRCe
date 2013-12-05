@@ -5,10 +5,17 @@
     <string name="action_settings">Settings</string>
     <string name="action_new_server">New Server</string>
     <string name="action_accept_server">Create Server</string>
+    <string name="action_show_user_list">Show Users</string>
+    <string name="action_open_macro">Macro Editor</string>
     
     <string name="title_server_list">Server List</string>
+    <string name="title_add_server">Add Server</string>
     
     <string name="list_frag_loading">Loading…</string>
+    
+    <string name="button_send">Send</string>
+    
+    <string name="not_impl">Feature Not Implemented</string>
     
     <string name="label_server_name">Server Name</string>
     <string name="label_server_address">Server Address</string>
