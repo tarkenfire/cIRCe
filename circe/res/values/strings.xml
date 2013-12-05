@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">cIRCe</string>
+    
     <string name="action_settings">Settings</string>
+    <string name="action_new_server">New Server</string>
+    
     <string name="title_server_list">Server List</string>
-
+    
+    <string name="pref_launch_log_viewer">Chat Log Viewer</string>
+    <string name="pref_log_directory">Default Log Directory</string>
+    
+    <string name="pref_summary_launch_log_viewer">Launch the log viewer to display previously recorded chat logs.</string>
+    <string name="pref_summary_log_directory">Default location in storage where chat logs will be saved and viewed.</string>
+    
+    <string name="pref_cat_logging">Chat Log Settings</string>
+	
 </resources>

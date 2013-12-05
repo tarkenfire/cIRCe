@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <PreferenceCategory
+        android:title="@string/pref_cat_logging"
+        android:layout="@layout/preference_category"
+        >
+	    
+	    <EditTextPreference 
+	        android:key="pref_log_directory"
+	        android:title="@string/pref_log_directory"
+	        android:summary="@string/pref_summary_log_directory"
+	        android:layout="@layout/preference_item"
+	        />
+	    
+	    <Preference
+	        android:key="pref_launch_log_viewer"
+	        android:title="@string/pref_launch_log_viewer"
+	        android:summary="@string/pref_summary_launch_log_viewer"
+	        android:layout="@layout/preference_item"
+	        />
+	    
+    </PreferenceCategory>
+
+</PreferenceScreen>
