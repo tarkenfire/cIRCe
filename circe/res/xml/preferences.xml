@@ -11,6 +11,7 @@
 	        android:title="@string/pref_log_directory"
 	        android:summary="@string/pref_summary_log_directory"
 	        android:layout="@layout/preference_item"
+	        android:defaultValue="/mnt/sdcard/chatlogs"
 	        />
 	    
 	    <Preference
@@ -20,6 +21,75 @@
 	        android:layout="@layout/preference_item"
 	        />
 	    
+    </PreferenceCategory>
+    <PreferenceCategory
+	        android:title="@string/pref_cat_general_settings"
+	        android:layout="@layout/preference_category">
+	    <PreferenceScreen
+	        android:key="pref_notification_screen"
+	        android:title="@string/pref_notification_screen"
+	        android:layout="@layout/preference_item">
+		    
+			<PreferenceCategory
+		        android:title="@string/pref_cat_notify_types"
+		        android:layout="@layout/preference_category">
+	        	
+	        	<CheckBoxPreference 
+	        	    android:key="pref_notify_on_highlight"
+	        	    android:title="@string/pref_notify_on_highlight"
+	        	    android:summary="@string/pref_summary_notify_on_highlight"
+	        	    android:layout="@layout/preference_item"
+	        	    />
+				<CheckBoxPreference 
+	        	    android:key="pref_notify_on_query"
+	        	    android:title="@string/pref_notify_on_query"
+	        	    android:summary="@string/pref_summary_notify_on_query"
+	        	    android:layout="@layout/preference_item"
+	        	    />
+			    
+	        </PreferenceCategory>
+	        
+			<PreferenceCategory
+		        android:title="@string/pref_cat_general_settings"
+		        android:layout="@layout/preference_category">
+	        	
+			    <ListPreference 
+			        android:key="pref_notify_vibrate_sound_mode"
+			        android:title="@string/pref_notify_vibrate_sound_mode"
+			        android:entries="@array/pref_notify_display_options"
+			        android:entryValues="@array/pref_notify_value_options"
+			        android:layout="@layout/preference_item"
+			        />
+			    
+				<RingtonePreference
+			        android:key="pref_tone"
+			        android:title="@string/pref_notify_ring_tone"
+			        android:summary="@string/pref_summary_notify_ring_tone"
+			        android:showDefault="true"
+			        android:layout="@layout/preference_item"/>
+			    
+	        </PreferenceCategory>
+	    </PreferenceScreen>
+	
+	    <PreferenceScreen
+	        android:key="pref_defaults_screen"
+	        android:title="@string/pref_default_server_settings"
+	        android:layout="@layout/preference_item">
+			
+		    <EditTextPreference 
+		        android:key="pref_default_username"
+		        android:title="@string/pref_default_username"
+		        android:summary="@string/pref_summary_default_username"
+		        android:layout="@layout/preference_item"
+		        />
+			<CheckBoxPreference 
+        	    android:key="pref_default_logging"
+        	    android:title="@string/pref_default_logging"
+        	    android:summary="@string/pref_summary_default_logging"
+        	    android:layout="@layout/preference_item"
+        	    />
+			
+		</PreferenceScreen>
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -7,12 +7,31 @@
     
     <string name="title_server_list">Server List</string>
     
+    <string name="list_frag_loading">Loading…</string>
+    
     <string name="pref_launch_log_viewer">Chat Log Viewer</string>
     <string name="pref_log_directory">Default Log Directory</string>
+    <string name="pref_notification_screen">Notification Settings</string>
+    <string name="pref_notify_on_highlight">Notify On Highlight</string>
+    <string name="pref_notify_on_query">Notify on Private Message</string>
+    <string name="pref_notify_vibrate_sound_mode">Sound and Vibration Settings</string>
+    <string name="pref_notify_ring_tone">Notification Sound</string>
+    <string name="pref_default_server_settings">Server Defaults</string>
+    <string name="pref_default_username">Default Username</string>
+    <string name="pref_default_logging">Default Logging</string>
+
     
     <string name="pref_summary_launch_log_viewer">Launch the log viewer to display previously recorded chat logs.</string>
     <string name="pref_summary_log_directory">Default location in storage where chat logs will be saved and viewed.</string>
+    <string name="pref_summary_notify_on_highlight">If selected, notifications will be sent whenever your current nickname appears in any of the IRC windows opened.</string>
+    <string name="pref_summary_notify_on_query">If selected, notifications will be sent whenever you receive a private message.</string>
+    <string name="pref_summary_notify_ring_tone">Sound to be played for notifcations.</string>
+    <string name="pref_summary_default_username">Default username to be used when creating servers.</string>
+    <string name="pref_summary_default_logging">If selected, logging will be enabled by default when creating servers.</string>
+   
     
     <string name="pref_cat_logging">Chat Log Settings</string>
+    <string name="pref_cat_notify_types">Notification Types</string>
+    <string name="pref_cat_general_settings">General Settings</string>
 	
 </resources>

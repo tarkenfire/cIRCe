@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/white" />
+    
     <TextView 
         android:id="@+android:id/title"
         android:background="#000000"
@@ -15,5 +20,10 @@
     	android:paddingBottom="6dp"
     	android:paddingTop="6dp"
         />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/white" />
 
 </LinearLayout>
