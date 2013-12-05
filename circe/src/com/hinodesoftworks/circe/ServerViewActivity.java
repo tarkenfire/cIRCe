@@ -79,6 +79,10 @@ public class ServerViewActivity extends Activity implements TabListener
 				Intent i = new Intent(this, UserListActivity.class);
 				startActivity(i);
 				return true;
+			case R.id.action_open_macro_editor:
+				Intent ii = new Intent(this, MacroListActivity.class);
+				startActivity(ii);
+				return true;
 		}
 		return false;
 	}
@@ -136,11 +140,7 @@ public class ServerViewActivity extends Activity implements TabListener
 					return "#help";
 			}
 			return null;
-		}
-		
-		
-		
-		
+		}	
 		
 	}
 

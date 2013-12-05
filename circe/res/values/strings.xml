@@ -10,10 +10,12 @@
     
     <string name="title_server_list">Server List</string>
     <string name="title_add_server">Add Server</string>
+    <string name="title_macro_list">Macro List</string>
     
     <string name="list_frag_loading">Loading…</string>
     
     <string name="button_send">Send</string>
+    <string name="button_raw_submit">Add Command</string>
     
     <string name="not_impl">Feature Not Implemented</string>
     
