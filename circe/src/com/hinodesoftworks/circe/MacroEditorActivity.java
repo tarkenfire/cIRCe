@@ -27,6 +27,9 @@ public class MacroEditorActivity extends Activity implements TabListener
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
+		//TODO: Make dynamic
+		actionBar.setTitle("cIRCe - Edit Macro");
+		
 		//connect pager
 		macroAdapter = new MacroPagerAdapter(getFragmentManager());
 		

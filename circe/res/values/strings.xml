@@ -14,6 +14,8 @@
     
     <string name="list_frag_loading">Loading…</string>
     
+    <string name="grid_macro_default">Macro</string>
+    
     <string name="button_send">Send</string>
     <string name="button_raw_submit">Add Command</string>
     
