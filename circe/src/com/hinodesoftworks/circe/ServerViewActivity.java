@@ -1,3 +1,10 @@
+/* 
+ * Date: Dec 5, 2013
+ * Project: cIRCe
+ * Package: com.hinodesoftworks.circe
+ * @author Michael Mancuso
+ *
+ */
 package com.hinodesoftworks.circe;
 
 import android.app.ActionBar;
@@ -14,15 +21,21 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ServerViewActivity.
+ */
 public class ServerViewActivity extends Activity implements TabListener
 {
 
 	ViewPager viewPager;
 	ServerPagerAdapter servPagerAdapter;
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -59,6 +72,9 @@ public class ServerViewActivity extends Activity implements TabListener
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -67,6 +83,9 @@ public class ServerViewActivity extends Activity implements TabListener
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{
@@ -87,38 +106,61 @@ public class ServerViewActivity extends Activity implements TabListener
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.ActionBar.TabListener#onTabSelected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	 */
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction)
 	{
 		viewPager.setCurrentItem(tab.getPosition());
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.ActionBar.TabListener#onTabReselected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	 */
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction fragmentTransaction)
 	{
 		// do nothing	
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.ActionBar.TabListener#onTabUnselected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	 */
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction fragmentTransaction)
 	{
 		//do nothing
 	}
 	
+	/**
+	 * The Class ServerPagerAdapter.
+	 */
 	private class ServerPagerAdapter extends FragmentPagerAdapter
 	{
 
+		/**
+		 * Instantiates a new server pager adapter.
+		 *
+		 * @param fm the fm
+		 */
 		public ServerPagerAdapter(FragmentManager fm)
 		{
 			super(fm);
 		}
 
+		/* (non-Javadoc)
+		 * @see android.support.v13.app.FragmentPagerAdapter#getItem(int)
+		 */
 		@Override
 		public Fragment getItem(int position)
 		{
 			return new ServerViewFragment();
 		}
 
+		/* (non-Javadoc)
+		 * @see android.support.v4.view.PagerAdapter#getCount()
+		 */
 		@Override
 		public int getCount()
 		{
@@ -126,6 +168,9 @@ public class ServerViewActivity extends Activity implements TabListener
 			return 3;
 		}
 
+		/* (non-Javadoc)
+		 * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
+		 */
 		@Override
 		public CharSequence getPageTitle(int position)
 		{

@@ -1,3 +1,10 @@
+/* 
+ * Date: Dec 5, 2013
+ * Project: cIRCe
+ * Package: com.hinodesoftworks.circe
+ * @author Michael Mancuso
+ *
+ */
 package com.hinodesoftworks.circe;
 
 import java.io.File;
@@ -19,6 +26,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LimitedFileBrowserFragment.
+ */
 public class LimitedFileBrowserFragment extends ListFragment
 {
 	
@@ -26,6 +37,9 @@ public class LimitedFileBrowserFragment extends ListFragment
 	private ArrayList<File> logFileList;
 	public static MimeTypeMap mtm = MimeTypeMap.getSingleton();
 	
+	/* (non-Javadoc)
+	 * @see android.app.Fragment#onAttach(android.app.Activity)
+	 */
 	@Override
 	public void onAttach(Activity activity)
 	{
@@ -41,6 +55,9 @@ public class LimitedFileBrowserFragment extends ListFragment
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.ListFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
@@ -50,6 +67,9 @@ public class LimitedFileBrowserFragment extends ListFragment
 	
 	
 
+	/* (non-Javadoc)
+	 * @see android.app.Fragment#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -82,6 +102,9 @@ public class LimitedFileBrowserFragment extends ListFragment
 		}).start();
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.ListFragment#onListItemClick(android.widget.ListView, android.view.View, int, long)
+	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
@@ -89,6 +112,11 @@ public class LimitedFileBrowserFragment extends ListFragment
 	}
 	
 	//utility methods
+	/**
+	 * Search directory recursive.
+	 *
+	 * @param dir the dir
+	 */
 	private void searchDirectoryRecursive(File dir)
 	{
 		File[] filesInDir = dir.listFiles();
@@ -167,6 +195,9 @@ public class LimitedFileBrowserFragment extends ListFragment
 	
 	
 	
+	/**
+	 * On file search complete.
+	 */
 	private void onFileSearchComplete()
 	{
 		//TODO: This is placeholder code that doesn't pass the file locations to

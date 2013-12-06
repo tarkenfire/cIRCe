@@ -1,3 +1,10 @@
+/* 
+ * Date: Dec 5, 2013
+ * Project: cIRCe
+ * Package: com.hinodesoftworks.circe
+ * @author Michael Mancuso
+ *
+ */
 package com.hinodesoftworks.circe;
 
 import android.app.ActionBar;
@@ -11,11 +18,18 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MacroEditorActivity.
+ */
 public class MacroEditorActivity extends Activity implements TabListener
 {
 	MacroPagerAdapter macroAdapter;
 	ViewPager viewPager;
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -58,32 +72,52 @@ public class MacroEditorActivity extends Activity implements TabListener
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see android.app.ActionBar.TabListener#onTabSelected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	 */
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction)
 	{
 		viewPager.setCurrentItem(tab.getPosition());
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.ActionBar.TabListener#onTabReselected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	 */
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction fragmentTransaction)
 	{
 		// do nothing	
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.ActionBar.TabListener#onTabUnselected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	 */
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction fragmentTransaction)
 	{
 		//do nothing
 	}
 	
+	/**
+	 * The Class MacroPagerAdapter.
+	 */
 	private class MacroPagerAdapter extends FragmentPagerAdapter
 	{
 
+		/**
+		 * Instantiates a new macro pager adapter.
+		 *
+		 * @param fm the fm
+		 */
 		public MacroPagerAdapter(FragmentManager fm)
 		{
 			super(fm);
 		}
 
+		/* (non-Javadoc)
+		 * @see android.support.v13.app.FragmentPagerAdapter#getItem(int)
+		 */
 		@Override
 		public Fragment getItem(int position)
 		{
@@ -99,6 +133,9 @@ public class MacroEditorActivity extends Activity implements TabListener
 			return null;
 		}
 
+		/* (non-Javadoc)
+		 * @see android.support.v4.view.PagerAdapter#getCount()
+		 */
 		@Override
 		public int getCount()
 		{

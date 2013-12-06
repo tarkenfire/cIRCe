@@ -8,11 +8,16 @@
 package com.hinodesoftworks.circe;
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.FragmentManager;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SettingsActivity.
+ */
 public class SettingsActivity extends Activity implements OnFragmentChangeRequestListener
 {
 	FragmentType currentType;
@@ -20,6 +25,9 @@ public class SettingsActivity extends Activity implements OnFragmentChangeReques
 	LimitedFileBrowserFragment fileBrowserFragment;
 	boolean hasBrowseFrag = true;
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -30,8 +38,15 @@ public class SettingsActivity extends Activity implements OnFragmentChangeReques
 		settingsFragment = new SettingsFragment();
 		fileBrowserFragment = new LimitedFileBrowserFragment();
 		getFragmentManager().beginTransaction().replace(android.R.id.content, settingsFragment, "settings").commit();
+		
+		//TODO Static data
+		ActionBar actionBar = getActionBar();
+		actionBar.setTitle("cIRCe - Settings");
 	}
 
+	/* (non-Javadoc)
+	 * @see com.hinodesoftworks.circe.OnFragmentChangeRequestListener#onFragmentChangeRequest(com.hinodesoftworks.circe.OnFragmentChangeRequestListener.FragmentType)
+	 */
 	@Override
 	public void onFragmentChangeRequest(FragmentType type)
 	{

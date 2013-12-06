@@ -17,15 +17,19 @@ import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.Toast;
-import android.app.Fragment;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SettingsFragment.
+ */
 public class SettingsFragment extends PreferenceFragment implements OnPreferenceClickListener
 {	
 	Preference logViewerPref;
 	OnFragmentChangeRequestListener listener;
 	
+	/* (non-Javadoc)
+	 * @see android.app.Fragment#onAttach(android.app.Activity)
+	 */
 	@Override
 	public void onAttach(Activity activity)
 	{
@@ -41,6 +45,9 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.preference.PreferenceFragment#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -54,6 +61,9 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		logViewerPref.setOnPreferenceClickListener(this);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.preference.PreferenceFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
@@ -61,7 +71,26 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		View layout = inflater.inflate(R.layout.fragment_settings, null);
 		return layout;
 	}
+	
+	
+	
+	/* (non-Javadoc)
+	 * @see android.app.Fragment#onResume()
+	 */
+	@Override
+	public void onResume()
+	{		
+		super.onResume();
+		
+		
+	}
+	
 
+	
+
+	/* (non-Javadoc)
+	 * @see android.preference.Preference.OnPreferenceClickListener#onPreferenceClick(android.preference.Preference)
+	 */
 	@Override
 	public boolean onPreferenceClick(Preference preference)
 	{

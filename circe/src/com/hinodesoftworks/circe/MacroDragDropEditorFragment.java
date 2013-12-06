@@ -1,10 +1,16 @@
+/* 
+ * Date: Dec 5, 2013
+ * Project: cIRCe
+ * Package: com.hinodesoftworks.circe
+ * @author Michael Mancuso
+ *
+ */
 package com.hinodesoftworks.circe;
 
 import java.util.ArrayList;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +18,18 @@ import android.widget.GridView;
 
 import com.hinodesoftworks.utils.DropMacro;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MacroDragDropEditorFragment.
+ */
 public class MacroDragDropEditorFragment extends Fragment
 {
 	
 	GridView grid;
 	
+	/* (non-Javadoc)
+	 * @see android.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
@@ -39,6 +52,9 @@ public class MacroDragDropEditorFragment extends Fragment
 		return rootView;
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.Fragment#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{

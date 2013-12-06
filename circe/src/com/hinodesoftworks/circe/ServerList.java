@@ -1,3 +1,10 @@
+/* 
+ * Date: Dec 5, 2013
+ * Project: cIRCe
+ * Package: com.hinodesoftworks.circe
+ * @author Michael Mancuso
+ *
+ */
 package com.hinodesoftworks.circe;
 
 import java.util.ArrayList;
@@ -12,9 +19,16 @@ import android.content.res.Resources;
 import android.view.Menu;
 import android.view.MenuItem;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ServerList.
+ */
 public class ServerList extends Activity implements OnServerSelectedListener
 {
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -48,6 +62,9 @@ public class ServerList extends Activity implements OnServerSelectedListener
 	
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -56,6 +73,9 @@ public class ServerList extends Activity implements OnServerSelectedListener
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{
@@ -78,6 +98,9 @@ public class ServerList extends Activity implements OnServerSelectedListener
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.hinodesoftworks.circe.ServerListFragment.OnServerSelectedListener#onServerSelected()
+	 */
 	@Override
 	public void onServerSelected()
 	{

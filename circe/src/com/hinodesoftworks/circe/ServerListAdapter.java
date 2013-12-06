@@ -1,5 +1,5 @@
 /* 
- * Date: Dec 4, 2013
+ * Date: Dec 5, 2013
  * Project: cIRCe
  * Package: com.hinodesoftworks.circe
  * @author Michael Mancuso
@@ -19,11 +19,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ServerListAdapter.
+ */
 public class ServerListAdapter extends ArrayAdapter<Server>
 {
 	ArrayList<Server> servers;
 	Context ctx;
 	
+	/**
+	 * Instantiates a new server list adapter.
+	 *
+	 * @param context the context
+	 * @param resource the resource
+	 * @param objects the objects
+	 */
 	public ServerListAdapter(Context context, int resource, ArrayList<Server> objects)
 	{
 		super(context, resource, objects);
@@ -32,6 +43,9 @@ public class ServerListAdapter extends ArrayAdapter<Server>
 		ctx = context;
 	}
 
+	/* (non-Javadoc)
+	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{

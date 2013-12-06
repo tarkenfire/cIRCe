@@ -23,7 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.hinodesoftworks.circe.SettingsActivity"></activity>
+        <activity android:name="com.hinodesoftworks.circe.SettingsActivity"
+            android:parentActivityName="com.hinodesoftworks.circe.ServerList"
+            android:theme="@android:style/Theme.Holo"
+            ></activity>
         <activity android:name="com.hinodesoftworks.circe.AddServerActivity"
             android:parentActivityName="com.hinodesoftworks.circe.ServerList"> 
         </activity>
