@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import com.hinodesoftworks.circe.ServerListFragment.OnServerSelectedListener;
 import com.hinodesoftworks.utils.Server;
+import com.hinodesoftworks.utils.ServerDataSource;
+import com.hinodesoftworks.utils.ServerManager;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -25,7 +27,9 @@ import android.view.MenuItem;
  */
 public class ServerList extends Activity implements OnServerSelectedListener
 {
-
+	ServerDataSource serverDataSource;
+	ServerManager serverManager;
+	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -35,23 +39,23 @@ public class ServerList extends Activity implements OnServerSelectedListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_server_list);
 		
-		//TODO: Static data for milestone 1. Remove for m2
-		Server serv1 = new Server("Quakenet", "se.quakenet.org");
-		Server serv2 = new Server("Dalnet", "halcyon.il.us.dal.net");
-		Server serv3 = new Server("Geekshed", "irc.geekshed.net");
+
 		
-		serv1.setConnected(true);
-		serv2.setConnected(true);
-		serv3.setConnected(false);
-		
-		ArrayList<Server> demoAdapterList = new ArrayList<Server>();
-		demoAdapterList.add(serv1);
-		demoAdapterList.add(serv2);
-		demoAdapterList.add(serv3);
-		
-		ServerListAdapter adapter = new ServerListAdapter(this, R.layout.row_server_list, demoAdapterList);
 		
 		//non demo code starts here
+		//vars
+		serverDataSource = new ServerDataSource(this);
+		serverDataSource.openDatabase();
+		
+		serverManager = ServerManager.getInstance();
+		
+		//use the manager to properly update the server list, on create will normally 
+		//get a fresh list, but in the case of rotation, don't reset all servers
+		ArrayList<Server> allServs = serverDataSource.getAllServers();
+		serverManager.updateServers(allServs);
+		
+		ArrayList<Server> managedServers = serverManager.getServers();
+		ServerListAdapter adapter = new ServerListAdapter(this, R.layout.row_server_list, managedServers);
 		
 		//set title for screen
 		Resources res = getResources();
@@ -96,6 +100,33 @@ public class ServerList extends Activity implements OnServerSelectedListener
 		}
 		
 		return true;
+	}
+	
+	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (resultCode == RESULT_OK)
+		{
+			Server serv = new Server(data.getStringExtra("serv_name"), data.getStringExtra("serv_address"));
+			serv.setServerPort(data.getIntExtra("port", 6666));
+			serv.setUserName(data.getStringExtra("username"));
+			serv.setPassword(data.getStringExtra("password"));
+			
+			serverDataSource.createServer(serv);
+			
+			ArrayList<Server> allServs = serverDataSource.getAllServers();
+			serverManager.updateServers(allServs);
+			
+			ArrayList<Server> managedServers = serverManager.getServers();
+			ServerListAdapter adapter = new ServerListAdapter(this, R.layout.row_server_list, managedServers);
+			
+			ServerListFragment serverFrag = (ServerListFragment) getFragmentManager().findFragmentById(R.id.server_list_fragment);
+			serverFrag.setListAdapter(adapter);
+		}
 	}
 
 	/* (non-Javadoc)

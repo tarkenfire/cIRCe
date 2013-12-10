@@ -13,8 +13,13 @@ package com.hinodesoftworks.utils;
  */
 public class Server
 {
+	private long id;
 	private String serverName;
 	private String serverAddress;
+	private int serverPort;
+	private String userName;
+	private String password;
+	
 	private boolean isConnected;
 	
 	/**
@@ -87,5 +92,45 @@ public class Server
 	public void setConnected(boolean isConnected)
 	{
 		this.isConnected = isConnected;
+	}
+
+	public int getServerPort()
+	{
+		return serverPort;
+	}
+
+	public void setServerPort(int serverPort)
+	{
+		this.serverPort = serverPort;
+	}
+
+	public String getPassword()
+	{
+		return password;
+	}
+
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
+
+	public String getUserName()
+	{
+		return userName;
+	}
+
+	public void setUserName(String userName)
+	{
+		this.userName = userName;
+	}
+
+	public long getId()
+	{
+		return id;
+	}
+
+	public void setId(long id)
+	{
+		this.id = id;
 	}
 }
