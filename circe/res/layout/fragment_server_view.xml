@@ -7,17 +7,16 @@
     android:paddingRight="5dp"
     >
     
-     <ListView android:id="@id/android:list"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:background="#000000"
-		/>
+
     
     <LinearLayout 
+        android:id="@+id/server_view_control_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="10"
+        android:layout_alignParentBottom="true"
+        
         >
 	    <EditText
 	        android:id="@+id/server_view_chat_input"
@@ -39,5 +38,13 @@
 	        />
     </LinearLayout>
     
+	<ListView android:id="@id/android:list"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="#000000"
+		android:layout_above="@id/server_view_control_container"
+		android:transcriptMode="normal"
+		android:stackFromBottom="true"
+		/>
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Locale;
 
 public class IRCConnection
 {
@@ -37,7 +38,8 @@ public class IRCConnection
 		this.listener = listener;
 	}
 	
-	protected IRCConnection ()
+	//TODO: Re-encapsulate creation of object.
+	public IRCConnection ()
 	{}
 	
 	public void connectToServer(String serverAddress, int port, String username, String password) throws UnknownHostException, IOException
@@ -59,10 +61,9 @@ public class IRCConnection
 		return false;
 	}
 	
-	private String parseRawMessage(String raw)
+	private void parseRawMessage(String raw)
 	{
-		
-		return "";
+		listener.onNetworkMessageReceived(raw);
 	}
 	
 	
@@ -76,7 +77,7 @@ public class IRCConnection
 				while ((line = serverReader.readLine()) != null)
 				{
 					//always respond to pings.
-					if (line.toLowerCase( ).startsWith("ping"))
+					if (line.toLowerCase(Locale.US).startsWith("ping"))
 					{
 		                serverWriter.write("PONG " + line.substring(5) + "\r\n");
 		                serverWriter.flush();

@@ -30,5 +30,6 @@ public class ServerViewFragment extends ListFragment
 	{
 		return inflater.inflate(R.layout.fragment_server_view, null);
 	}
+	
 
 }

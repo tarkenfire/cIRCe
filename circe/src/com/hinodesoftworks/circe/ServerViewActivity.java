@@ -7,6 +7,13 @@
  */
 package com.hinodesoftworks.circe;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+
+import com.hinodesoftworks.utils.IRCConnection;
+import com.hinodesoftworks.utils.IRCConnection.OnIRCMessageReceivedListener;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -19,19 +26,24 @@ import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ServerViewActivity.
  */
-public class ServerViewActivity extends Activity implements TabListener
+public class ServerViewActivity extends Activity implements TabListener, OnIRCMessageReceivedListener
 {
-
 	ViewPager viewPager;
 	ServerPagerAdapter servPagerAdapter;
+	ArrayList<String> chatBuffer; 
+	ArrayAdapter<String> adapter;
+	
+	ServerViewFragment svf;
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -69,6 +81,29 @@ public class ServerViewActivity extends Activity implements TabListener
 			tabToAdd.setTabListener(this);
 			actionBar.addTab(tabToAdd);
 		}
+		
+		//svf = (ServerViewFragment)getFragmentManager().findFragmentByTag(getTabFragmentTag(viewPager.getId(), 0));
+		IRCConnection testConn = new IRCConnection();
+		testConn.setOnIRCMessageReceivedListener(this);
+		
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+		svf.setListAdapter(adapter);
+		
+		try
+		{
+			testConn.connectToServer("irc.geekshed.net", 6667, "Tarkenmeh", "");
+		}
+		catch (UnknownHostException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
@@ -133,12 +168,36 @@ public class ServerViewActivity extends Activity implements TabListener
 		//do nothing
 	}
 	
+	@Override
+	public void onChannelMessageReceived(String channel, String message)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onNetworkMessageReceived(String message)
+	{
+		adapter.add(message);
+		adapter.notifyDataSetChanged();	
+	}
+
+	@Override
+	public void onPrivateMessageReceived(String sender, String message)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	/**
 	 * The Class ServerPagerAdapter.
 	 */
 	private class ServerPagerAdapter extends FragmentPagerAdapter
 	{
-
+		SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+		
+		
 		/**
 		 * Instantiates a new server pager adapter.
 		 *
@@ -185,8 +244,11 @@ public class ServerViewActivity extends Activity implements TabListener
 					return "#help";
 			}
 			return null;
-		}	
+		}
+		
+		
 		
 	}
+
 
 }
