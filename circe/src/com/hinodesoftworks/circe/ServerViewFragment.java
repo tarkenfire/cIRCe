@@ -8,6 +8,7 @@
 package com.hinodesoftworks.circe;
 
 import android.app.Fragment;
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import android.view.ViewGroup;
 /**
  * The Class ServerViewFragment.
  */
-public class ServerViewFragment extends Fragment
+public class ServerViewFragment extends ListFragment
 {
 	
 	/* (non-Javadoc)
