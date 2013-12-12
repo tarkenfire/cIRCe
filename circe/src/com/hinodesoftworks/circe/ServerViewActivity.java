@@ -26,9 +26,11 @@ import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 
@@ -40,10 +42,13 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 {
 	ViewPager viewPager;
 	ServerPagerAdapter servPagerAdapter;
+	
 	ArrayList<String> chatBuffer; 
 	ArrayAdapter<String> adapter;
+	ArrayAdapter<String> cadapter;
 	
 	ServerViewFragment svf;
+	ServerViewFragment csvf;
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -82,12 +87,21 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 			actionBar.addTab(tabToAdd);
 		}
 		
-		//svf = (ServerViewFragment)getFragmentManager().findFragmentByTag(getTabFragmentTag(viewPager.getId(), 0));
+		svf = (ServerViewFragment)servPagerAdapter.instantiateItem(viewPager,0);
+		csvf = (ServerViewFragment)servPagerAdapter.instantiateItem(viewPager,1);
+		
 		IRCConnection testConn = new IRCConnection();
 		testConn.setOnIRCMessageReceivedListener(this);
 		
 		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+		cadapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+		
+		Log.i("ADAPTER", adapter == null ? "Null" : "Not Null");
+		Log.i("FRAGMENT", svf == null ? "Null" : "Not Null");
+		
+		
 		svf.setListAdapter(adapter);
+		csvf.setListAdapter(cadapter);
 		
 		try
 		{
@@ -171,15 +185,36 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 	@Override
 	public void onChannelMessageReceived(String channel, String message)
 	{
-		// TODO Auto-generated method stub
+		final String msg = message;
+		
+		this.runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				cadapter.add(msg);
+				cadapter.notifyDataSetChanged();	
+			}
+		});
 		
 	}
 
 	@Override
 	public void onNetworkMessageReceived(String message)
 	{
-		adapter.add(message);
-		adapter.notifyDataSetChanged();	
+		final String msg = message;
+		
+		this.runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				adapter.add(msg);
+				adapter.notifyDataSetChanged();	
+			}
+		});
+
+		Log.i("HANDLER", message);
 	}
 
 	@Override
@@ -246,8 +281,26 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 			return null;
 		}
 		
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) 
+		{
+			Fragment fragment = (Fragment) super.instantiateItem(container, position);
+			registeredFragments.put(position, fragment);
+			return fragment;
+		}
+	
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) 
+		{
+		    registeredFragments.remove(position);
+		    super.destroyItem(container, position, object);
+		}
 		
-		
+	    public Fragment getRegisteredFragment(int position) 
+	    {
+	        return registeredFragments.get(position);
+	    }
+
 	}
 
 

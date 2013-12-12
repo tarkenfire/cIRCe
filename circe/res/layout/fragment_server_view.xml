@@ -41,7 +41,7 @@
 	<ListView android:id="@id/android:list"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="#000000"
+		android:background="#FFFFFF"
 		android:layout_above="@id/server_view_control_container"
 		android:transcriptMode="normal"
 		android:stackFromBottom="true"

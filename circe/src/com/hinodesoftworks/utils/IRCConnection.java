@@ -43,17 +43,9 @@ public class IRCConnection
 	{}
 	
 	public void connectToServer(String serverAddress, int port, String username, String password) throws UnknownHostException, IOException
-	{
-		serverSocket = new Socket(serverAddress, port);
-		serverReader = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
-		serverWriter = new BufferedWriter(new OutputStreamWriter(serverSocket.getOutputStream()));	
-		
-        serverWriter.write("NICK " + username + "\r\n");
-        serverWriter.write("USER " + username + " 8 * "+ username +" \r\n");
-        serverWriter.flush();
-        
-        ConnThread connThread = new ConnThread();
-        connThread.run();
+	{        
+        ConnThread connThread = new ConnThread(username, password, serverAddress, port);
+        connThread.start();
 	}
 	
 	public boolean disconnectFromServer()
@@ -63,25 +55,74 @@ public class IRCConnection
 	
 	private void parseRawMessage(String raw)
 	{
-		listener.onNetworkMessageReceived(raw);
+		if (raw.contains("PRIVMSG") && raw.contains("#")) //channel message
+		{
+			listener.onChannelMessageReceived(raw.substring(raw.indexOf("#"), raw.lastIndexOf(":")), raw.substring(raw.lastIndexOf(":")));
+		}
+		else if (raw.contains("PRIVMSG")) //private message
+		{
+			listener.onPrivateMessageReceived(raw.substring(1, raw.indexOf(" ")), raw.substring(raw.lastIndexOf(":")));
+		}
+		else //server message
+		{
+			listener.onNetworkMessageReceived(raw);	
+		}
+		
+		
 	}
 	
 	
 	private class ConnThread extends Thread
 	{
+		String username;
+		String password;
+		String serverAddress;
+		int serverPort;
+		
+		public ConnThread(String username, String password, String serverAddress, int serverPort)
+		{
+			this.username = username;
+			this.password = password;
+			this.serverAddress = serverAddress;
+			this.serverPort = serverPort;
+		}
+		
 		public void run()
 		{
 			String line;
 			try
 			{
+				serverSocket = new Socket(serverAddress, serverPort);
+				serverReader = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+				serverWriter = new BufferedWriter(new OutputStreamWriter(serverSocket.getOutputStream()));	
+				
+		        serverWriter.write("NICK " + username + "\r\n");
+		        serverWriter.write("USER " + username + " 8 * "+ username +" \r\n");
+		        
+		        serverWriter.flush();
+				
+		        int renameCounter = 0;
+		        
 				while ((line = serverReader.readLine()) != null)
 				{
+					
 					//always respond to pings.
 					if (line.toLowerCase(Locale.US).startsWith("ping"))
 					{
 		                serverWriter.write("PONG " + line.substring(5) + "\r\n");
 		                serverWriter.flush();
-					}			
+					}
+					else if(line.indexOf("433") >= 0) //nickname in use.
+					{
+				        serverWriter.write("NICK " + username + ++renameCounter + "\r\n");
+				        serverWriter.write("USER " + username + " 8 * "+ username +" \r\n");
+				        serverWriter.flush();
+					}
+					else if (line.indexOf("376") >=0) //connected to the server
+					{
+						serverWriter.write("JOIN #AvianAlliance");
+						serverWriter.flush();
+					}
 					
 					parseRawMessage(line);
 				}

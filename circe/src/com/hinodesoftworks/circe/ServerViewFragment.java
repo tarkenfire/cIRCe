@@ -10,6 +10,7 @@ package com.hinodesoftworks.circe;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class ServerViewFragment extends ListFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
 	{
+		Log.i("ONCREATE", "Fragment Created");
 		return inflater.inflate(R.layout.fragment_server_view, null);
 	}
 	
