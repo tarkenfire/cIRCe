@@ -7,10 +7,17 @@
  */
 package com.hinodesoftworks.circe;
 
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -21,6 +28,9 @@ import android.widget.ListView;
  */
 public class ServerListFragment extends ListFragment
 {
+	protected Object actionMode;
+	public int selectedItem = -1;
+	
 	
 	/**
 	 * The listener interface for receiving onServerSelected events.
@@ -40,6 +50,8 @@ public class ServerListFragment extends ListFragment
 		 * On server selected.
 		 */
 		public void onServerSelected();
+		public void onServerDelete(int selectedItem);
+		public void onServerEdit(int selectedItem);
 	}
 
 	OnServerSelectedListener listener;
@@ -62,15 +74,42 @@ public class ServerListFragment extends ListFragment
 		}
 	}
 	
+	
 	/* (non-Javadoc)
 	 * @see android.app.ListFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
-	{
-		return inflater.inflate(R.layout.fragment_server_list, null);
+	{	
+		return inflater.inflate(R.layout.fragment_server_list, null);	
 	}
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState)
+	{
+		super.onViewCreated(view, savedInstanceState);
+		
+		ListView list = this.getListView();
+		list.setOnItemLongClickListener(new OnItemLongClickListener(){
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id)
+			{
+				if (actionMode != null)
+				{
+					return false;
+				}
+				selectedItem = position;
+				
+				actionMode = ServerListFragment.this.getActivity().startActionMode(actionModeCallback);
+				view.setSelected(true);
+				
+				return true;
+			}});
+	}
+
 
 	/* (non-Javadoc)
 	 * @see android.app.ListFragment#onListItemClick(android.widget.ListView, android.view.View, int, long)
@@ -79,8 +118,55 @@ public class ServerListFragment extends ListFragment
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
 		listener.onServerSelected();
+		
 	}
 	
+	
+	private ActionMode.Callback actionModeCallback = new ActionMode.Callback() 
+	{
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item)
+		{
+			switch (item.getItemId())
+			{
+			case R.id.action_delete_server:
+				listener.onServerDelete(selectedItem);
+				mode.finish();
+				return true;
+			case R.id.action_edit_server:
+				listener.onServerEdit(selectedItem);
+				mode.finish();
+				return true;
+			default:
+				return false;
+			}
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu)
+		{
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.server_list_context, menu);
+			return true;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode)
+		{
+			actionMode = null;
+			selectedItem = -1;
+			
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu)
+		{
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+	};
 	
 	
 	

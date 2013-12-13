@@ -27,6 +27,9 @@ import android.widget.Toast;
  */
 public class AddServerActivity extends Activity
 {
+	static final int RESULT_EDITED_OK = 1029;
+	boolean isEdited = false;
+	
 	EditText serverNameView;
 	EditText serverAddressView;
 	EditText portView;
@@ -51,6 +54,23 @@ public class AddServerActivity extends Activity
 		passwordView = (EditText)findViewById(R.id.add_server_password_entry);
 		loggingSwitch = (Switch)findViewById(R.id.add_server_logging_entry);
 		
+		Intent sender = this.getIntent();
+		
+		if (sender.getAction() != null && sender.getAction().equals(Intent.ACTION_EDIT))
+		{
+			//set vars from intent
+			serverNameView.setText(sender.getStringExtra("serv_name"));
+			serverAddressView.setText(sender.getStringExtra("serv_address"));
+			portView.setText(String.valueOf(sender.getIntExtra("port", 6667)));
+			usernameView.setText(sender.getStringExtra("username"));
+			passwordView.setText(sender.getStringExtra("password"));
+			
+			isEdited = true;
+		}
+		else //get defaults from settings.
+		{
+			
+		}
 		
 		//set title for screen
 		Resources res = getResources();
@@ -88,7 +108,11 @@ public class AddServerActivity extends Activity
 				//if error, returnIntent == null, return.
 				if (returnIntent == null) return false;
 				
-				this.setResult(RESULT_OK, returnIntent);
+				
+				if (isEdited)
+					this.setResult(RESULT_EDITED_OK, returnIntent);
+				else
+					this.setResult(RESULT_OK, returnIntent);
 				
 				this.finish();
 				Toast.makeText(this, R.string.toast_server_created, Toast.LENGTH_LONG).show();
@@ -148,7 +172,7 @@ public class AddServerActivity extends Activity
 		catch(NumberFormatException nfe)
 		{
 			Toast.makeText(this, R.string.error_bad_port, Toast.LENGTH_SHORT).show();
-			port = 6666;
+			port = 6667;
 		}
 		
 		returnIntent.putExtra("port", port);

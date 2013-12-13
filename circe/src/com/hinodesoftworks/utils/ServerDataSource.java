@@ -66,8 +66,16 @@ public class ServerDataSource
 	
 	public void updateServer(Server serverToUpdate)
 	{
+		ContentValues cv = new ContentValues();
+		cv.put(ServerDBHelper.COLUMN_SERVER_NAME, serverToUpdate.getServerName());
+		cv.put(ServerDBHelper.COLUMN_SERVER_ADDRESS, serverToUpdate.getServerAddress());
+		cv.put(ServerDBHelper.COLUMN_SERVER_PORT, serverToUpdate.getServerPort());
+		cv.put(ServerDBHelper.COLUMN_SERVER_USERNAME, serverToUpdate.getUserName());
+		cv.put(ServerDBHelper.COLUMN_SERVER_PASSWORD, serverToUpdate.getPassword());
 		
+		db.update(ServerDBHelper.TABLE_SERVERS, cv, ServerDBHelper.COLUMN_ID + "=" + serverToUpdate.getId(), null);
 	}
+	
 	
 	public void deleteServer(Server serverToDelete)
 	{

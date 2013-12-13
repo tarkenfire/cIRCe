@@ -7,6 +7,12 @@
     <string name="action_accept_server">Create Server</string>
     <string name="action_show_user_list">Show Users</string>
     <string name="action_open_macro">Macro Editor</string>
+    <string name="action_delete_server">Delete Server</string>
+    <string name="action_edit_server">Edit Server</string>
+    <string name="action_add_macro">Add Macro</string>
+    <string name="action_delete_macro">Delete Macro</string>
+    <string name="action_rename_macro">Rename Macro</string>
+    <string name="action_save_macro">Save Macro</string>
     
     <string name="title_server_list">Server List</string>
     <string name="title_add_server">Add Server</string>

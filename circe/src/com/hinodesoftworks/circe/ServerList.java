@@ -141,4 +141,38 @@ public class ServerList extends Activity implements OnServerSelectedListener
 		
 	}
 
+	@Override
+	public void onServerDelete(int selectedItem)
+	{
+		Server server = serverManager.getServerAtPositon(selectedItem);
+		serverDataSource.deleteServer(server);
+		
+		ArrayList<Server> allServs = serverDataSource.getAllServers();
+		serverManager.updateServers(allServs);
+		
+		ArrayList<Server> managedServers = serverManager.getServers();
+		ServerListAdapter adapter = new ServerListAdapter(this, R.layout.row_server_list, managedServers);
+		
+		ServerListFragment serverFrag = (ServerListFragment) getFragmentManager().findFragmentById(R.id.server_list_fragment);
+		serverFrag.setListAdapter(adapter);
+	}
+
+	@Override
+	public void onServerEdit(int selectedItem)
+	{
+		Server server = serverManager.getServerAtPositon(selectedItem);
+		
+		Intent sender = new Intent(this, AddServerActivity.class);
+		sender.setAction(Intent.ACTION_EDIT);
+		
+		sender.putExtra("serv_name", server.getServerName());
+		sender.putExtra("serv_address", server.getServerAddress());
+		sender.putExtra("username", server.getUserName());
+		sender.putExtra("port", server.getServerPort());
+		sender.putExtra("password", server.getPassword());
+		
+		startActivityForResult(sender, 0);
+		
+	}
+
 }

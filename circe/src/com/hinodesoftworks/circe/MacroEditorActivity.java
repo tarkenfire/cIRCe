@@ -7,6 +7,10 @@
  */
 package com.hinodesoftworks.circe;
 
+import java.util.ArrayList;
+
+import com.hinodesoftworks.utils.Macro;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -17,6 +21,9 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -26,6 +33,9 @@ public class MacroEditorActivity extends Activity implements TabListener
 {
 	MacroPagerAdapter macroAdapter;
 	ViewPager viewPager;
+	Macro currentMacro;
+	ArrayList<String> macroList;
+	MacroEditorListFragment macListFrag;
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -35,6 +45,8 @@ public class MacroEditorActivity extends Activity implements TabListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_macro_editor);	
+		
+		macroList = new ArrayList<String>();
 		
 		//set up action bar
 		final ActionBar actionBar = getActionBar();
@@ -69,6 +81,40 @@ public class MacroEditorActivity extends Activity implements TabListener
 		rawTabHolder.setText("Raw Editor");
 		rawTabHolder.setTabListener(this);
 		actionBar.addTab(rawTabHolder);
+		
+		//get list fragment reference.
+		macListFrag = (MacroEditorListFragment)getFragmentManager().findFragmentById(R.id.macro_editor_list);
+		ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, macroList);
+		macListFrag.setListAdapter(listAdapter);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.macro_editor, menu);
+		return true;
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{	
+		switch(item.getItemId())
+		{
+			case R.id.action_save_macro:
+				
+				break;
+			case R.id.action_rename_macro:
+				
+				break;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+		
+		return true;
 	}
 	
 	
