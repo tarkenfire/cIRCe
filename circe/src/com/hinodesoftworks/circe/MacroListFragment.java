@@ -88,23 +88,7 @@ public class MacroListFragment extends ListFragment
 		super.onViewCreated(view, savedInstanceState);
 		
 		ListView list = this.getListView();
-		list.setOnItemLongClickListener(new OnItemLongClickListener(){
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id)
-			{
-				if (actionMode != null)
-				{
-					return false;
-				}
-				selectedItem = position;
-				
-				actionMode = MacroListFragment.this.getActivity().startActionMode(actionModeCallback);
-				view.setSelected(true);
-				
-				return true;
-			}});
 	}
 	
 	/* (non-Javadoc)
@@ -126,49 +110,6 @@ public class MacroListFragment extends ListFragment
 		listener.onMacroSelected();
 	}
 	
-	
-	private ActionMode.Callback actionModeCallback = new ActionMode.Callback() 
-	{
 
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item)
-		{
-			switch (item.getItemId())
-			{
-			case R.id.action_delete_macro:
-				
-				mode.finish();
-				return true;
-			default:
-				return false;
-			}
-		}
-
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu)
-		{
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.server_list_context, menu);
-			return true;
-		}
-
-		@Override
-		public void onDestroyActionMode(ActionMode mode)
-		{
-			actionMode = null;
-			selectedItem = -1;
-			
-		}
-
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu)
-		{
-			// TODO Auto-generated method stub
-			return false;
-		}
 		
-	};
-	
-	
-	
 }

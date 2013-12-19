@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import com.hinodesoftworks.utils.FragmentDataMapper;
+import com.hinodesoftworks.utils.FragmentData;
 import com.hinodesoftworks.utils.IRCConnection;
 import com.hinodesoftworks.utils.IRCConnection.OnIRCMessageReceivedListener;
 
@@ -23,7 +25,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -49,6 +51,9 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 	
 	ServerViewFragment svf;
 	ServerViewFragment csvf;
+	ActionBar actionBar;
+	
+	FragmentDataMapper fragmentDataMapper;
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -60,15 +65,17 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 		setContentView(R.layout.activity_server_view);
 		
 		//set up action bar
-		final ActionBar actionBar = getActionBar();
+		actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		//connect pager
 		servPagerAdapter = new ServerPagerAdapter(getFragmentManager());
+		fragmentDataMapper = FragmentDataMapper.getInstance();
 		
 		viewPager = (ViewPager)findViewById(R.id.server_view_pager);
 		viewPager.setAdapter(servPagerAdapter);
+		viewPager.setOffscreenPageLimit(10);
 		viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
 		{
 			@Override
@@ -79,29 +86,16 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 		});
 		
 		//populate tabs
-		for (int i = 0; i < servPagerAdapter.getCount(); i++)
-		{
-			Tab tabToAdd = actionBar.newTab();
-			tabToAdd.setText(servPagerAdapter.getPageTitle(i));
-			tabToAdd.setTabListener(this);
-			actionBar.addTab(tabToAdd);
-		}
-		
-		svf = (ServerViewFragment)servPagerAdapter.instantiateItem(viewPager,0);
-		csvf = (ServerViewFragment)servPagerAdapter.instantiateItem(viewPager,1);
+		Tab tabToAdd = actionBar.newTab();
+		tabToAdd.setText("Network");
+		tabToAdd.setTabListener(this);
+		actionBar.addTab(tabToAdd);
 		
 		IRCConnection testConn = new IRCConnection();
 		testConn.setOnIRCMessageReceivedListener(this);
 		
-		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-		cadapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-		
-		Log.i("ADAPTER", adapter == null ? "Null" : "Not Null");
-		Log.i("FRAGMENT", svf == null ? "Null" : "Not Null");
 		
 		
-		svf.setListAdapter(adapter);
-		csvf.setListAdapter(cadapter);
 		
 		try
 		{
@@ -192,10 +186,11 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 			@Override
 			public void run()
 			{
-				cadapter.add(msg);
-				cadapter.notifyDataSetChanged();	
+		
 			}
 		});
+		
+		//Log.i("CHANHANDLER", message);
 		
 	}
 
@@ -209,12 +204,31 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 			@Override
 			public void run()
 			{
-				adapter.add(msg);
-				adapter.notifyDataSetChanged();	
+				FragmentData data = fragmentDataMapper.getData("Network");
+				ServerViewFragment visFrag = servPagerAdapter.getFragment(getActionBar().getSelectedNavigationIndex());
+				
+				if (data == null)
+				{
+					
+					ArrayList<String> chatStrings = new ArrayList<String>();
+					chatStrings.add(msg);
+					data = new FragmentData(chatStrings);
+					//visFrag.refresh(data);
+					fragmentDataMapper.updateData("Network", data);
+				}
+				else
+				{
+					ArrayList<String> chatStrings = data.getChatStrings();
+					chatStrings.add(msg);
+					data = new FragmentData(chatStrings);
+					//visFrag.refresh(data);
+					
+					fragmentDataMapper.updateData("Network", data);
+				}	
 			}
 		});
 
-		Log.i("HANDLER", message);
+		//Log.i("HANDLER", message);
 	}
 
 	@Override
@@ -228,15 +242,15 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 	/**
 	 * The Class ServerPagerAdapter.
 	 */
-	private class ServerPagerAdapter extends FragmentPagerAdapter
+	private class ServerPagerAdapter extends FragmentStatePagerAdapter
 	{
-		SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+		SparseArray<ServerViewFragment> registeredFragments = new SparseArray<ServerViewFragment>();
 		
 		
 		/**
 		 * Instantiates a new server pager adapter.
 		 *
-		 * @param fm the fm
+		 * @param fm the fragment manager
 		 */
 		public ServerPagerAdapter(FragmentManager fm)
 		{
@@ -249,57 +263,36 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 		@Override
 		public Fragment getItem(int position)
 		{
-			return new ServerViewFragment();
+			Tab curTab = actionBar.getTabAt(position);
+			
+			ServerViewFragment serverFrag = ServerViewFragment.createInstance(curTab.getText().toString());
+			
+			registeredFragments.put(position, serverFrag);
+			
+			return serverFrag;
 		}
 
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) 
+		{
+		    super.destroyItem(container, position, object);
+		    registeredFragments.remove(position);
+		}
+		
+		
 		/* (non-Javadoc)
 		 * @see android.support.v4.view.PagerAdapter#getCount()
 		 */
 		@Override
 		public int getCount()
 		{
-			// TODO STATIC VALUE.
-			return 3;
-		}
+			return registeredFragments.size();
+		}	
 
-		/* (non-Javadoc)
-		 * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
-		 */
-		@Override
-		public CharSequence getPageTitle(int position)
+		public ServerViewFragment getFragment(int position)
 		{
-			//TODO: HARD CODED
-			switch (position)
-			{
-				case 0:
-					return "Status";
-				case 1:
-					return "#chat";
-				case 2:
-					return "#help";
-			}
-			return null;
+			return registeredFragments.get(position);
 		}
-		
-		@Override
-		public Object instantiateItem(ViewGroup container, int position) 
-		{
-			Fragment fragment = (Fragment) super.instantiateItem(container, position);
-			registeredFragments.put(position, fragment);
-			return fragment;
-		}
-	
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) 
-		{
-		    registeredFragments.remove(position);
-		    super.destroyItem(container, position, object);
-		}
-		
-	    public Fragment getRegisteredFragment(int position) 
-	    {
-	        return registeredFragments.get(position);
-	    }
 
 	}
 

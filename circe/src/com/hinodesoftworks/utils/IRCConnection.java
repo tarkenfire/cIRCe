@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Locale;
 
+import android.util.Log;
+
 public class IRCConnection
 {
 	//TODO (Maybe): This class would not be safe a stand-alone library b/c
@@ -98,7 +100,6 @@ public class IRCConnection
 				
 		        serverWriter.write("NICK " + username + "\r\n");
 		        serverWriter.write("USER " + username + " 8 * "+ username +" \r\n");
-		        
 		        serverWriter.flush();
 				
 		        int renameCounter = 0;
@@ -107,7 +108,7 @@ public class IRCConnection
 				{
 					
 					//always respond to pings.
-					if (line.toLowerCase(Locale.US).startsWith("ping"))
+					if (line.startsWith("PING"))
 					{
 		                serverWriter.write("PONG " + line.substring(5) + "\r\n");
 		                serverWriter.flush();
@@ -120,7 +121,7 @@ public class IRCConnection
 					}
 					else if (line.indexOf("376") >=0) //connected to the server
 					{
-						serverWriter.write("JOIN #AvianAlliance");
+						serverWriter.write("JOIN #AvianAlliance\r\n");
 						serverWriter.flush();
 					}
 					
