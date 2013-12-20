@@ -49,7 +49,7 @@ public class ServerListFragment extends ListFragment
 		/**
 		 * On server selected.
 		 */
-		public void onServerSelected();
+		public void onServerSelected(int selectedItem);
 		public void onServerDelete(int selectedItem);
 		public void onServerEdit(int selectedItem);
 	}
@@ -117,7 +117,7 @@ public class ServerListFragment extends ListFragment
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
-		listener.onServerSelected();
+		listener.onServerSelected(position);
 		
 	}
 	

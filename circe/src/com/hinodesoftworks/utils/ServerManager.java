@@ -1,5 +1,7 @@
 package com.hinodesoftworks.utils;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,6 +57,37 @@ public class ServerManager
 		this.servers = new ArrayList<Server>(castSet);	
 	}
 	
+	public IRCConnection getConnection(Server server)
+	{
+		IRCConnection conn = connections.get(server);
+		
+		if (conn == null)
+		{
+			conn = new IRCConnection();
+			connections.put(server, conn);
+		}
+		
+		return conn;
+	}
 	
+	public void startConnection(Server server)
+	{
+		IRCConnection conn = connections.get(server);
+		
+		try
+		{
+			conn.connectToServer(server.getServerAddress(), server.getServerPort(), server.getUserName(), server.getPassword());
+		}
+		catch (UnknownHostException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }

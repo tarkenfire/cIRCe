@@ -7,14 +7,14 @@
  */
 package com.hinodesoftworks.circe;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import com.hinodesoftworks.utils.FragmentDataMapper;
 import com.hinodesoftworks.utils.FragmentData;
 import com.hinodesoftworks.utils.IRCConnection;
 import com.hinodesoftworks.utils.IRCConnection.OnIRCMessageReceivedListener;
+import com.hinodesoftworks.utils.Server;
+import com.hinodesoftworks.utils.ServerManager;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -26,14 +26,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.v13.app.FragmentStatePagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 
 // TODO: Auto-generated Javadoc
@@ -45,15 +43,18 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 	ViewPager viewPager;
 	ServerPagerAdapter servPagerAdapter;
 	
-	ArrayList<String> chatBuffer; 
-	ArrayAdapter<String> adapter;
-	ArrayAdapter<String> cadapter;
-	
-	ServerViewFragment svf;
-	ServerViewFragment csvf;
 	ActionBar actionBar;
 	
+	int fragmentCount = 1;
+	String currentChan = "";
+	
 	FragmentDataMapper fragmentDataMapper;
+	IRCConnection connection;
+	
+	ServerManager serverManager;
+	
+	int selectedServer;
+	
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -63,6 +64,9 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_server_view);
+		
+		serverManager = ServerManager.getInstance();
+		selectedServer = this.getIntent().getExtras().getInt("selected_server_index");
 		
 		//set up action bar
 		actionBar = getActionBar();
@@ -91,28 +95,15 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 		tabToAdd.setTabListener(this);
 		actionBar.addTab(tabToAdd);
 		
-		IRCConnection testConn = new IRCConnection();
-		testConn.setOnIRCMessageReceivedListener(this);
+		Server connServer = serverManager.getServerAtPositon(selectedServer);
+		connection = serverManager.getConnection(connServer);
+		connection.setOnIRCMessageReceivedListener(this);
 		
-		
-		
-		
-		try
+		if (!connection.isConnected())
 		{
-			testConn.connectToServer("irc.geekshed.net", 6667, "Tarkenmeh", "");
+			serverManager.startConnection(connServer);
 		}
-		catch (UnknownHostException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+			
 	}
 	
 	/* (non-Javadoc)
@@ -126,6 +117,53 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 		return true;
 	}
 	
+	public void sendServerMessage(String msg)
+	{
+		if (connection.isConnected())
+		{
+			connection.sendMessage(msg);
+		}
+	}
+	
+	public void sendRawMessage(String raw)
+	{
+		if (connection.isConnected())
+		{
+			connection.sendRawMessage(raw);
+		}
+		
+		if (raw.contains("JOIN"))
+		{
+			Tab tabToAdd = actionBar.newTab();
+			tabToAdd.setText(raw.substring(raw.indexOf(" ") + 1 ));
+			tabToAdd.setTabListener(this);
+			actionBar.addTab(tabToAdd);
+			fragmentCount++;
+			servPagerAdapter.notifyDataSetChanged();
+			
+		}
+		
+		if (raw.contains("PART"))
+		{
+			Tab tabToRemove = actionBar.getSelectedTab();
+			actionBar.removeTab(tabToRemove);
+			fragmentCount--;
+			servPagerAdapter.notifyDataSetChanged();
+		}
+		
+		if (raw.contains("QUIT"))
+		{
+			connection.disconnectFromServer();
+			
+		}
+		
+	}
+	
+	public void sendChannelMessage(String msg)
+	{
+		this.sendRawMessage("PRIVMSG " + currentChan + " " + msg);
+	}
+	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
@@ -135,7 +173,7 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 		switch(item.getItemId())
 		{
 			case android.R.id.home:
-		        NavUtils.navigateUpFromSameTask(this);
+		        super.onBackPressed();
 		        return true;
 			case R.id.action_show_user_list:
 				Intent i = new Intent(this, UserListActivity.class);
@@ -143,7 +181,7 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 				return true;
 			case R.id.action_open_macro_editor:
 				Intent ii = new Intent(this, MacroListActivity.class);
-				startActivity(ii);
+				startActivityForResult(ii, 0);
 				return true;
 		}
 		return false;
@@ -156,6 +194,7 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 	public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction)
 	{
 		viewPager.setCurrentItem(tab.getPosition());
+		currentChan = tab.getText().toString();
 	}
 
 	/* (non-Javadoc)
@@ -180,17 +219,43 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 	public void onChannelMessageReceived(String channel, String message)
 	{
 		final String msg = message;
+		final String chan = channel;
+		
+		Log.i("CHANNEL", chan);
 		
 		this.runOnUiThread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-		
+				FragmentData data = fragmentDataMapper.getData(chan);
+				ServerViewFragment visFrag = servPagerAdapter.getFragment(getActionBar().getSelectedNavigationIndex());
+				
+				if (data == null)
+				{
+					
+					ArrayList<String> chatStrings = new ArrayList<String>();
+					chatStrings.add(msg);
+					data = new FragmentData(chatStrings);
+					
+					if (visFrag != null)
+						visFrag.refresh(data);
+					
+					fragmentDataMapper.updateData(chan, data);
+				}
+				else
+				{
+					ArrayList<String> chatStrings = data.getChatStrings();
+					chatStrings.add(msg);
+					data = new FragmentData(chatStrings);
+					if (visFrag != null)
+						visFrag.refresh(data);
+					fragmentDataMapper.updateData(chan, data);
+				}	
 			}
 		});
 		
-		//Log.i("CHANHANDLER", message);
+		Log.i("CHANHANDLER", message);
 		
 	}
 
@@ -204,16 +269,24 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 			@Override
 			public void run()
 			{
+				Tab checkTab = actionBar.getTabAt(actionBar.getSelectedNavigationIndex());
+				if (!checkTab.getText().toString().equals("Network"))
+				{
+					return;
+				}
+				
 				FragmentData data = fragmentDataMapper.getData("Network");
 				ServerViewFragment visFrag = servPagerAdapter.getFragment(getActionBar().getSelectedNavigationIndex());
 				
 				if (data == null)
 				{
-					
 					ArrayList<String> chatStrings = new ArrayList<String>();
 					chatStrings.add(msg);
 					data = new FragmentData(chatStrings);
-					//visFrag.refresh(data);
+					
+					if (visFrag != null)
+						visFrag.refresh(data);
+					
 					fragmentDataMapper.updateData("Network", data);
 				}
 				else
@@ -221,14 +294,14 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 					ArrayList<String> chatStrings = data.getChatStrings();
 					chatStrings.add(msg);
 					data = new FragmentData(chatStrings);
-					//visFrag.refresh(data);
-					
+					if (visFrag != null)
+						visFrag.refresh(data);
 					fragmentDataMapper.updateData("Network", data);
 				}	
 			}
 		});
 
-		//Log.i("HANDLER", message);
+		Log.i("HANDLER", message);
 	}
 
 	@Override
@@ -237,7 +310,15 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (resultCode == RESULT_OK)
+		{
+			String rawData = data.getStringExtra("raw");
+			this.sendRawMessage(rawData);
+		}
+	}
 	
 	/**
 	 * The Class ServerPagerAdapter.
@@ -268,7 +349,7 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 			ServerViewFragment serverFrag = ServerViewFragment.createInstance(curTab.getText().toString());
 			
 			registeredFragments.put(position, serverFrag);
-			
+			Log.i("FRAGMENT", serverFrag == null ? "True" : "False");
 			return serverFrag;
 		}
 
@@ -286,7 +367,7 @@ public class ServerViewActivity extends Activity implements TabListener, OnIRCMe
 		@Override
 		public int getCount()
 		{
-			return registeredFragments.size();
+			return fragmentCount;
 		}	
 
 		public ServerViewFragment getFragment(int position)

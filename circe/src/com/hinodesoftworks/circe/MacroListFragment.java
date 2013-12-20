@@ -49,7 +49,7 @@ public class MacroListFragment extends ListFragment
 		/**
 		 * On macro selected.
 		 */
-		public void onMacroSelected();
+		public void onMacroSelected(int selectedMacro);
 	}
 	
 	OnMacroSelectedListener listener;
@@ -87,8 +87,11 @@ public class MacroListFragment extends ListFragment
 	{
 		super.onViewCreated(view, savedInstanceState);
 		
-		ListView list = this.getListView();
-
+		
+		String [] options = {"Join Channel", "Part Channel", "Quit Server", "Display Topic"};
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.single_row_list_item, options);
+		this.setListAdapter(adapter);
 	}
 	
 	/* (non-Javadoc)
@@ -106,8 +109,7 @@ public class MacroListFragment extends ListFragment
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
-		// TODO not dynamic
-		listener.onMacroSelected();
+		listener.onMacroSelected(position);
 	}
 	
 

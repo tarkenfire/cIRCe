@@ -133,10 +133,12 @@ public class ServerList extends Activity implements OnServerSelectedListener
 	 * @see com.hinodesoftworks.circe.ServerListFragment.OnServerSelectedListener#onServerSelected()
 	 */
 	@Override
-	public void onServerSelected()
+	public void onServerSelected(int selectedItem)
 	{
-		// TODO non dynamic code
 		Intent i = new Intent(this, ServerViewActivity.class);
+		
+		i.putExtra("selected_server_index", selectedItem);
+		
 		startActivity(i);
 		
 	}

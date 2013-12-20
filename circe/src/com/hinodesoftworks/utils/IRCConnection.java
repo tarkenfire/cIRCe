@@ -34,14 +34,17 @@ public class IRCConnection
 	private BufferedReader serverReader; 
 	private BufferedWriter serverWriter;
 	
+	private boolean isConnected = false;
+	private boolean serverConnCompleted = false;
+	
 	
 	public void setOnIRCMessageReceivedListener(OnIRCMessageReceivedListener listener)
 	{
 		this.listener = listener;
 	}
 	
-	//TODO: Re-encapsulate creation of object.
-	public IRCConnection ()
+
+	protected IRCConnection ()
 	{}
 	
 	public void connectToServer(String serverAddress, int port, String username, String password) throws UnknownHostException, IOException
@@ -52,14 +55,26 @@ public class IRCConnection
 	
 	public boolean disconnectFromServer()
 	{
+		try
+		{
+			serverWriter.write("QUIT\r\n" );
+			serverWriter.flush();
+			return true;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
 		return false;
+		
 	}
 	
 	private void parseRawMessage(String raw)
 	{
 		if (raw.contains("PRIVMSG") && raw.contains("#")) //channel message
 		{
-			listener.onChannelMessageReceived(raw.substring(raw.indexOf("#"), raw.lastIndexOf(":")), raw.substring(raw.lastIndexOf(":")));
+			listener.onChannelMessageReceived(raw.substring(raw.indexOf("#"), raw.lastIndexOf(":")), "<" + raw.substring(1, raw.indexOf("!") ) + ">" + raw.substring(raw.lastIndexOf(":")));
 		}
 		else if (raw.contains("PRIVMSG")) //private message
 		{
@@ -69,10 +84,56 @@ public class IRCConnection
 		{
 			listener.onNetworkMessageReceived(raw);	
 		}
-		
+	}
+	
+	public void sendMessage(String msg)
+	{
+		try
+		{
+			serverWriter.write("PRIVMSG #AVIANALLIANCE " + msg + "\r\n" );
+			serverWriter.flush();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void sendRawMessage(String raw)
+	{
+		try
+		{
+			serverWriter.write(raw);
+			serverWriter.flush();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void joinChannel(String channelName)
+	{
 		
 	}
 	
+	public void partChannel(String channelName)
+	{
+		
+	}
+	
+	public boolean isConnected()
+	{
+		return isConnected;
+	}
+	
+	public boolean isServerLoaded()
+	{
+		return serverConnCompleted;
+	}
 	
 	private class ConnThread extends Thread
 	{
@@ -95,6 +156,8 @@ public class IRCConnection
 			try
 			{
 				serverSocket = new Socket(serverAddress, serverPort);
+				isConnected = true;
+				
 				serverReader = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
 				serverWriter = new BufferedWriter(new OutputStreamWriter(serverSocket.getOutputStream()));	
 				
@@ -121,8 +184,7 @@ public class IRCConnection
 					}
 					else if (line.indexOf("376") >=0) //connected to the server
 					{
-						serverWriter.write("JOIN #AvianAlliance\r\n");
-						serverWriter.flush();
+						serverConnCompleted = true;
 					}
 					
 					parseRawMessage(line);
@@ -132,6 +194,9 @@ public class IRCConnection
 			{
 				e.printStackTrace();
 			}	
+			
+			//no longer connected to server
+			isConnected = false;
 		}		
 	}
 	

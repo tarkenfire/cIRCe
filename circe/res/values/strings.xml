@@ -24,6 +24,7 @@
     
     <string name="button_send">Send</string>
     <string name="button_raw_submit">Add Command</string>
+    <string name="button_submit">Submit</string>
     
     <string name="not_impl">Feature Not Implemented</string>
     
@@ -31,6 +32,7 @@
     <string name="error_no_server_address">Server address must be in irc.server.tld form and not be blank.</string>
     <string name="error_bad_port">Empty or invalid port, default of 6666 is assumed.</string>
     <string name="error_no_username">A username is required.</string>
+    <string name="error_no_input">Input must not be left blank.</string>
     
     <string name="label_server_name">Server Name</string>
     <string name="label_server_address">Server Address</string>
@@ -39,9 +41,11 @@
     <string name="label_username">User Name</string>
     <string name="label_password">Password</string>
     
+    
+    <string name="hint_param">Enter Parameter</string>
     <string name="hint_server_name">e.g. "Quakenet"</string>
     <string name="hint_server_address">e.g. "irc.quakenet.org"</string>
-    <string name="hint_server_port">6666</string>
+    <string name="hint_server_port">6667</string>
     <string name="hint_username">e.g. "IRCUser123"</string>
     
     
@@ -69,6 +73,6 @@
     <string name="pref_cat_notify_types">Notification Types</string>
     <string name="pref_cat_general_settings">General Settings</string>
     
-    <string name="toast_server_created">Server Created (Feature Not Implemented)</string>
+    <string name="toast_server_created">Server Created</string>
 	
 </resources>

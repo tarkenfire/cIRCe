@@ -42,7 +42,8 @@
         <activity android:name="com.hinodesoftworks.circe.MacroEditorActivity"
             android:parentActivityName="com.hinodesoftworks.circe.MacroListActivity"
             android:windowSoftInputMode="adjustPan"></activity>
-        
+        <activity android:name="com.hinodesoftworks.circe.MacroParamInputActivity"
+        android:theme="@android:style/Theme.Holo.Dialog"></activity>
     </application>
 
 </manifest>
